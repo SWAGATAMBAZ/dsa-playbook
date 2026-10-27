@@ -147,6 +147,13 @@ pre.code{background:var(--code-bg);color:var(--code-ink);border:1px solid var(--
 .pane{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
 .pane-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
 .pane-head h3{font-size:17px;font-weight:700}
+.pane-actions{display:flex;gap:6px}
+.sol-wrap{position:relative;border-radius:8px}
+.sol-inner{transition:filter .25s}
+.sol-wrap.locked .sol-inner{filter:blur(7px);user-select:none;pointer-events:none}
+.reveal{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:color-mix(in srgb, var(--surface) 35%, transparent);border-radius:8px}
+.reveal-btn{padding:9px 18px;font-size:14.5px;font-weight:600;box-shadow:0 4px 14px color-mix(in srgb, var(--accent) 30%, transparent)}
+.reveal-hint{font-size:12.5px;color:var(--muted);background:var(--surface);padding:2px 8px;border-radius:99px}
 .cx{margin-top:10px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
 .explain h4{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px;font-weight:500}
 .explain h4:first-of-type{margin-top:0}
@@ -4020,6 +4027,7 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
     var idx = ALL.indexOf(p);
     var prev = ALL[idx - 1], next = ALL[idx + 1];
     var t = p.topic;
+    var shown = revealedId === p.id;
     var link = t.ml ? "" : '<a class="btn" href="https://leetcode.com/problems/' + slug(p.t) + '/" target="_blank" rel="noopener">Open on LeetCode ↗</a>';
     var label = t.ml ? p.n : "LeetCode #" + p.n;
     var html =
@@ -4040,9 +4048,19 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
         "</div></article>" +
       '<div class="panes">' +
         '<section class="pane" aria-label="Optimised solution">' +
-          '<div class="pane-head"><h3>Optimised solution</h3><button class="btn" data-copy>Copy code</button></div>' +
-          '<pre class="code" id="sol">' + highlight(p.code) + "</pre>" +
-          '<div class="cx">' + esc(p.cx) + "</div>" +
+          '<div class="pane-head"><h3>Optimised solution</h3><div class="pane-actions">' +
+            '<button class="btn" data-hide' + (shown ? "" : " hidden") + '>Hide</button>' +
+            '<button class="btn" data-copy' + (shown ? "" : " disabled") + '>Copy code</button></div></div>' +
+          '<div class="sol-wrap' + (shown ? "" : " locked") + '" id="solwrap">' +
+            '<div class="sol-inner"' + (shown ? "" : " inert") + '>' +
+              '<pre class="code" id="sol">' + highlight(p.code) + "</pre>" +
+              '<div class="cx">' + esc(p.cx) + "</div>" +
+            "</div>" +
+            '<div class="reveal"' + (shown ? " hidden" : "") + '>' +
+              '<button class="btn primary reveal-btn" data-reveal>Show solution</button>' +
+              '<span class="reveal-hint">Try it yourself first</span>' +
+            "</div>" +
+          "</div>" +
         "</section>" +
         '<section class="pane explain" aria-label="Explanation">' +
           '<div class="pane-head"><h3>Explained simply</h3></div>' +
@@ -4054,6 +4072,22 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
         "</section></div>";
     var el = document.getElementById("detail");
     el.innerHTML = html;
+  }
+
+  // Solution stays blurred until the viewer reveals it; resets on each new problem
+  var revealedId = null;
+  function setShown(on) {
+    var wrap = document.getElementById("solwrap");
+    if (!wrap) return;
+    var p = BY_ID[location.hash.slice(1)];
+    revealedId = on && p ? p.id : null;
+    wrap.classList.toggle("locked", !on);
+    var inner = wrap.querySelector(".sol-inner");
+    if (on) inner.removeAttribute("inert"); else inner.setAttribute("inert", "");
+    wrap.querySelector(".reveal").hidden = on;
+    document.querySelector("[data-hide]").hidden = !on;
+    document.querySelector("[data-copy]").disabled = !on;
+    if (!on) wrap.querySelector("[data-reveal]").focus();
   }
 
   // ---------- Routing ----------
@@ -4105,6 +4139,8 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
       if (done[pid]) delete done[pid]; else done[pid] = 1;
       save(); renderDetail(BY_ID[pid]); return;
     }
+    if (t.closest("[data-reveal]")) { setShown(true); return; }
+    if (t.closest("[data-hide]")) { setShown(false); return; }
     if (t.closest("[data-copy]")) {
       var btn = t.closest("[data-copy]");
       var pre = document.getElementById("sol");
