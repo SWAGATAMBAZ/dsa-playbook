@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="DSA and ML-coding interview playbook for AI Engineer and Data Scientist II roles: 159 problems with solutions and plain-English explanations.">
+<meta name="description" content="DSA and ML-coding interview playbook for AI Engineer and Data Scientist II roles: 159 problems with an in-browser Python editor, solutions and plain-English explanations.">
 <title>DSA Interview Playbook</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@ html{color-scheme:light}body{margin:0;font-size:14px}[hidden]{display:none!impor
   --bg:#F3F4F7; --surface:#FFFFFF; --ink:#141821; --muted:#5A6272; --line:#DDE1E8;
   --accent:#3D3BB8; --accent-soft:#E8E8FA; --marker:#FFE46B; --marker-ink:#2A2300;
   --code-bg:#F6F7FA; --code-ink:#1C2230;
-  --easy:#1E8A5A; --easy-bg:#E3F4EC; --med:#A86400; --med-bg:#FBEFD9; --hard:#C0392B; --hard-bg:#FBE4E1;
+  --on-badge:#FFFFFF; --star:#D99A00; --easy:#1E8A5A; --easy-bg:#E3F4EC; --med:#A86400; --med-bg:#FBEFD9; --hard:#C0392B; --hard-bg:#FBE4E1;
   --tok-kw:#7A2BB0; --tok-str:#1F7A4D; --tok-num:#B05500; --tok-com:#7C8494; --tok-fn:#2B4FD0; --tok-bi:#A2177B;
   --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
   --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
@@ -27,14 +27,14 @@ html{color-scheme:light}body{margin:0;font-size:14px}[hidden]{display:none!impor
   --bg:#0E1117; --surface:#161A22; --ink:#E7E9EF; --muted:#9AA2B3; --line:#2A303C;
   --accent:#A3A6FF; --accent-soft:#23254A; --marker:#E9CB45; --marker-ink:#1E1800;
   --code-bg:#0B0D12; --code-ink:#D9DEE8;
-  --easy:#5BD39A; --easy-bg:#13301F; --med:#F0B657; --med-bg:#33260F; --hard:#FF8A7A; --hard-bg:#3A1714;
+  --on-badge:#0E1117; --star:#F5C542; --easy:#5BD39A; --easy-bg:#13301F; --med:#F0B657; --med-bg:#33260F; --hard:#FF8A7A; --hard-bg:#3A1714;
   --tok-kw:#D29CFF; --tok-str:#8FD8A8; --tok-num:#FFB27A; --tok-com:#6E7686; --tok-fn:#8FB0FF; --tok-bi:#FF8FCF;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0E1117; --surface:#161A22; --ink:#E7E9EF; --muted:#9AA2B3; --line:#2A303C;
   --accent:#A3A6FF; --accent-soft:#23254A; --marker:#E9CB45; --marker-ink:#1E1800;
   --code-bg:#0B0D12; --code-ink:#D9DEE8;
-  --easy:#5BD39A; --easy-bg:#13301F; --med:#F0B657; --med-bg:#33260F; --hard:#FF8A7A; --hard-bg:#3A1714;
+  --on-badge:#0E1117; --star:#F5C542; --easy:#5BD39A; --easy-bg:#13301F; --med:#F0B657; --med-bg:#33260F; --hard:#FF8A7A; --hard-bg:#3A1714;
   --tok-kw:#D29CFF; --tok-str:#8FD8A8; --tok-num:#FFB27A; --tok-com:#6E7686; --tok-fn:#8FB0FF; --tok-bi:#FF8FCF;
   color-scheme:dark}
 
@@ -62,7 +62,7 @@ a{color:var(--accent)}
 .stat span{color:var(--muted);font-size:13px}
 .progress{flex:1 1 220px;min-width:0;max-width:360px}
 .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.bar{display:flex}.bar i{display:block;height:100%;width:0;transition:width .3s}.bar .b-own{background:var(--easy)}.bar .b-help{background:var(--med)}
 .progress small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
 
 /* Toolbar */
@@ -95,15 +95,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @media (max-width:820px){.primer{grid-template-columns:minmax(0,1fr)}}
 
 .plist{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
-.prow{display:grid;grid-template-columns:28px 62px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:9px 6px;border-bottom:1px solid var(--line);cursor:pointer;border-radius:6px}
+.prow{display:grid;grid-template-columns:26px 26px 58px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:9px 6px;border-bottom:1px solid var(--line);cursor:pointer;border-radius:6px}
 .prow:hover{background:var(--surface)}
 .prow .pn{font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
 .prow .pt{font-weight:500;min-width:0}
 .prow .pt small{display:block;font-weight:400;color:var(--muted);font-size:12px}
-.prow.done .pt{color:var(--muted)}
-.prow.done .pt>span{text-decoration:line-through;text-decoration-color:var(--muted)}
-.prow input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer;margin:0}
-@media (max-width:560px){.prow{grid-template-columns:24px minmax(0,1fr) auto}.prow .pn{display:none}.prow .prio{grid-column:2}.prow .diff{grid-row:1;grid-column:3}}
+.prow.st-own .pt>span,.prow.st-help .pt>span{color:var(--muted)}
+@media (max-width:560px){.prow{grid-template-columns:26px 26px minmax(0,1fr) auto}.prow .pn{display:none}.prow .prio{grid-column:3}.prow .diff{grid-row:1;grid-column:4}}
 .empty{color:var(--muted);font-size:14px;padding:12px 6px}
 
 /* Chips */
@@ -141,7 +139,7 @@ pre.code{background:var(--code-bg);color:var(--code-ink);border:1px solid var(--
 .ex-why{color:var(--muted)}
 .ex-k{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
 .constraints{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;font-size:13.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
-.qactions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.qactions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;align-items:center}
 .panes{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;margin-top:16px;align-items:start}
 @media (max-width:900px){.panes{grid-template-columns:minmax(0,1fr)}}
 .pane{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
@@ -164,6 +162,67 @@ pre.code{background:var(--code-bg);color:var(--code-ink);border:1px solid var(--
 .watch{border-left:3px solid var(--marker);padding:6px 10px;background:var(--code-bg);border-radius:0 6px 6px 0;font-size:14px}
 .hint-note{font-size:12.5px;color:var(--muted);margin-top:8px}
 .foot{margin-top:40px;color:var(--muted);font-size:12.5px}
+
+/* Status + redo controls */
+.stbtn,.starbtn{width:26px;height:26px;display:inline-grid;place-items:center;border:0;background:none;padding:0;border-radius:6px;cursor:pointer;color:var(--muted)}
+.stbtn svg,.starbtn svg{width:20px;height:20px}
+.stbtn:hover,.starbtn:hover{background:var(--accent-soft)}
+.starbtn svg path{fill:none}
+.starbtn.on{color:var(--star)}.starbtn.on svg path{fill:var(--star)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0;font-size:13px;color:var(--muted);align-items:center}
+.legend .lg{display:inline-flex;align-items:center;gap:6px}
+.legend svg{width:17px;height:17px;flex:none}
+.legend .lg-tip{flex-basis:100%;font-size:12.5px}
+#ptext .k-own{color:var(--easy)}#ptext .k-help{color:var(--med)}#ptext .k-redo{color:var(--star)}
+.stctl{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.stctl button{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:6px 11px;font-size:13px;cursor:pointer;color:var(--muted);white-space:nowrap}
+@media (max-width:440px){.stctl button{padding:6px 8px;font-size:12.5px;gap:4px}}
+.stctl button+button{border-left:1px solid var(--line)}
+.stctl svg{width:16px;height:16px}
+.stctl button[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.btn.redo svg{width:16px;height:16px}.btn.redo svg path{fill:none}
+.btn.redo.on{border-color:var(--star);color:var(--ink)}.btn.redo.on svg{color:var(--star)}.btn.redo.on svg path{fill:var(--star)}
+
+/* Code workspace */
+.workspace{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0}
+.ws-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:10px}
+.ws-head h3{font-size:17px;font-weight:700}
+.ws-lang{font-family:var(--f-mono);font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:1px 8px}
+.ws-actions{margin-left:auto;display:flex;gap:8px}
+.runbtn svg{width:14px;height:14px}
+.runbtn kbd{font-family:var(--f-mono);font-size:11px;opacity:.8;border:1px solid color-mix(in srgb, var(--surface) 50%, transparent);border-radius:4px;padding:0 4px}
+.runbtn[disabled]{opacity:.6}
+.editor{display:flex;border:1px solid var(--line);border-radius:8px;background:var(--code-bg);overflow:hidden}
+.editor:focus-within{border-color:var(--accent)}
+.ed-gutter,.ed-hl,.editor textarea{font-family:var(--f-mono);font-size:13.5px;line-height:1.6;tab-size:4;font-variant-ligatures:none;letter-spacing:0;margin:0}
+.ed-gutter{flex:none;padding:12px 8px 12px 12px;text-align:right;color:var(--tok-com);user-select:none;border-right:1px solid var(--line);min-width:40px;white-space:pre}
+.ed-area{position:relative;flex:1;min-width:0}
+.ed-hl{position:absolute;inset:0;padding:12px 14px;white-space:pre;overflow:hidden;color:var(--code-ink);pointer-events:none}
+.editor textarea{display:block;width:100%;min-height:260px;padding:12px 14px;border:0;outline:0;resize:none;background:transparent;color:transparent;caret-color:var(--ink);white-space:pre;overflow-x:auto;overflow-y:hidden}
+.editor textarea::selection{background:color-mix(in srgb, var(--accent) 28%, transparent);color:transparent}
+.console{margin-top:12px;display:grid;gap:8px;min-width:0}
+.con-idle{margin:0;font-size:13.5px;color:var(--muted)}
+.con-sum{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;padding:10px 12px;border-radius:8px;font-size:14px}
+.con-sum.good{background:var(--easy-bg);color:var(--easy)}
+.con-sum.bad{background:var(--hard-bg);color:var(--hard)}
+.con-sum.warn{background:var(--med-bg);color:var(--med)}
+.con-sum.busy{background:var(--code-bg);color:var(--muted)}
+.con-sum b{font-size:15px}
+.con-note{color:var(--ink);font-size:13px}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.case{border:1px solid var(--line);border-radius:8px;background:var(--code-bg);padding:0 12px;min-width:0}
+.case summary{cursor:pointer;padding:9px 0;font-weight:600;font-size:14px;display:flex;gap:8px;align-items:center}
+.case .mark{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:12px;color:var(--on-badge)}
+.case.ok .mark{background:var(--easy)}.case.no .mark{background:var(--hard)}
+.case[open]{padding-bottom:10px}
+.cr{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px;align-items:baseline;font-size:13.5px;margin-top:4px}
+.cr code,.con-out,.con-err{font-family:var(--f-mono);font-size:13px;color:var(--code-ink);overflow-wrap:anywhere;white-space:pre-wrap;margin:0}
+.con-errtxt{color:var(--hard)!important}
+.con-err{background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;color:var(--hard)}
+.con-out{background:var(--surface);border:1px dashed var(--line);border-radius:6px;padding:6px 8px;max-height:220px;overflow:auto}
+.con-k{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+@media (max-width:560px){.cr{grid-template-columns:minmax(0,1fr);gap:2px}.ws-actions{margin-left:0}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -174,13 +233,14 @@ pre.code{background:var(--code-bg);color:var(--code-ink);border:1px solid var(--
     <header class="masthead">
       <div class="eyebrow">AI Engineer · Data Scientist II · Interview prep</div>
       <h1>DSA <span class="hl">Interview Playbook</span></h1>
-      <p class="lede">Every problem from your roadmap, grouped by pattern. Read the primer at the top of each chapter, then open a problem to see an optimised Python solution beside a plain-English walkthrough.</p>
+      <p class="lede">Every problem from your roadmap, grouped by pattern. Read the primer at the top of each chapter, open a problem, solve it in the built-in Python editor, then compare with the optimised solution and its plain-English walkthrough.</p>
       <div class="stats">
         <div class="stat"><b id="st-total" class="tnum">0</b><span>problems</span></div>
         <div class="stat"><b id="st-must" class="tnum">0</b><span>Must Do</span></div>
         <div class="stat"><b id="st-ml" class="tnum">0</b><span>ML implementations</span></div>
-        <div class="progress"><div class="bar"><i id="pbar"></i></div><small id="ptext" class="tnum">0 solved</small></div>
+        <div class="progress"><div class="bar"><i id="pbar-own" class="b-own"></i><i id="pbar-help" class="b-help"></i></div><small id="ptext" class="tnum">0 solved</small></div>
       </div>
+      <p class="legend"><span class="lg"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Not solved</span><span class="lg"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="var(--easy)"/><path d="M6 10.3l2.6 2.6L14.2 7.4" fill="none" stroke="var(--on-badge)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Solved on my own</span><span class="lg"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="var(--med)"/><path d="M4.6 10c1.4-2.4 3.2-3.6 5.4-3.6s4 1.2 5.4 3.6c-1.4 2.4-3.2 3.6-5.4 3.6S6 12.4 4.6 10z" fill="none" stroke="var(--on-badge)" stroke-width="1.5"/><circle cx="10" cy="10" r="1.7" fill="var(--on-badge)"/></svg>Solved with help (looked at the solution or a hint)</span><span class="lg lg-star"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.6l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.9l5-.7z" fill="var(--star)" stroke="var(--star)" stroke-width="1.4" stroke-linejoin="round"/></svg>Redo later</span><span class="lg-tip">Click the circle on any row to cycle its status, or the star to mark it for a redo.</span></p>
     </header>
     <div class="toolbar" role="toolbar" aria-label="Filters">
       <div class="seg" id="f-prio" aria-label="Priority">
@@ -196,11 +256,17 @@ pre.code{background:var(--code-bg);color:var(--code-ink);border:1px solid var(--
         <button data-v="H" aria-pressed="false">Hard</button>
       </div>
       <label class="search"><input id="q" type="search" placeholder="Search by name or number" aria-label="Search problems"></label>
-      <label class="chk"><input id="hide-done" type="checkbox"> Hide solved</label>
+      <div class="seg" id="f-st" aria-label="Status">
+        <button data-v="all" aria-pressed="true">Any status</button>
+        <button data-v="none" aria-pressed="false">Unsolved</button>
+        <button data-v="own" aria-pressed="false">On my own</button>
+        <button data-v="help" aria-pressed="false">With help</button>
+        <button data-v="redo" aria-pressed="false">★ Redo</button>
+      </div>
     </div>
     <nav class="topicnav" id="topicnav" aria-label="Jump to topic"></nav>
     <main id="topics"></main>
-    <p class="foot">Solutions use LeetCode-style signatures; ListNode, TreeNode and Node are the classes LeetCode provides. Statements and examples are rewritten in plain language, and every example output was checked by running the solution; use the LeetCode link for the original wording. Your ticks are saved in this browser only.</p>
+    <p class="foot">Solutions use LeetCode-style signatures; ListNode, TreeNode and Node are the classes LeetCode provides. Statements and examples are rewritten in plain language, and every example output was checked by running the solution; use the LeetCode link for the original wording. Your status marks, redo stars and code are saved in this browser only. The editor runs real Python (Pyodide) in your browser; PyTorch problems must be run locally.</p>
   </section>
 
   <section id="detail" class="detail" hidden></section>
@@ -3877,10 +3943,13 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
  ex:[['LoRALinear(nn.Linear(16, 16), r = 4)','128 trainable parameters; at initialisation the output equals the base layer','A has 4 × 16 values, B has 16 × 4, and B starts at zero.','nt']],
  c:'Only expected at LLM-focused teams'}
 };
+window.HARNESS_PY = "import json, re, sys, io, math, random, traceback, contextlib\nfrom collections import deque\n\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\n    def __repr__(self):\n        return \"ListNode(%r)\" % (self.val,)\n\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\n    def __repr__(self):\n        return \"TreeNode(%r)\" % (self.val,)\n\n\nclass Node:\n    \"\"\"LeetCode's Node: linked list with random pointer, or graph node.\"\"\"\n    def __init__(self, val=0, next=None, random=None, neighbors=None):\n        self.val = val\n        self.next = next\n        self.random = random\n        self.neighbors = neighbors if neighbors is not None else []\n\n\ndef to_ll(a):\n    d = ListNode()\n    t = d\n    for x in a:\n        t.next = ListNode(x)\n        t = t.next\n    return d.next\n\n\ndef from_ll(h, limit=10000):\n    o = []\n    while h is not None and len(o) < limit:\n        o.append(h.val)\n        h = h.next\n    return o\n\n\ndef to_tree(a):\n    if not a:\n        return None\n    it = iter(a)\n    root = TreeNode(next(it))\n    q = deque([root])\n    while q:\n        n = q.popleft()\n        try:\n            v = next(it)\n            if v is not None:\n                n.left = TreeNode(v)\n                q.append(n.left)\n            v = next(it)\n            if v is not None:\n                n.right = TreeNode(v)\n                q.append(n.right)\n        except StopIteration:\n            break\n    return root\n\n\ndef tree_nodes(root):\n    out, q = {}, deque([root] if root else [])\n    while q:\n        n = q.popleft()\n        out[n.val] = n\n        if n.left:\n            q.append(n.left)\n        if n.right:\n            q.append(n.right)\n    return out\n\n\ndef from_tree(r):\n    o, q = [], deque([r])\n    while q:\n        n = q.popleft()\n        if n:\n            o.append(n.val)\n            q.append(n.left)\n            q.append(n.right)\n        else:\n            o.append(None)\n    while o and o[-1] is None:\n        o.pop()\n    return o\n\n\ndef lit(s):\n    s = re.sub(r\"\\bnull\\b\", \"None\", s)\n    s = re.sub(r\"\\btrue\\b\", \"True\", s)\n    return re.sub(r\"\\bfalse\\b\", \"False\", s)\n\n\ndef show(x):\n    try:\n        if isinstance(x, (ListNode,)):\n            x = from_ll(x)\n        elif isinstance(x, TreeNode):\n            x = from_tree(x)\n        r = json.dumps(x)\n    except Exception:\n        r = repr(x)\n    return r if len(r) <= 400 else r[:400] + \" …\"\n\n\ndef norm(x):\n    if isinstance(x, (list, tuple)):\n        x = [norm(i) for i in x]\n        try:\n            return sorted(x, key=repr)\n        except Exception:\n            return x\n    return x\n\n\ndef close(a, b):\n    if isinstance(a, tuple):\n        a = list(a)\n    if isinstance(b, tuple):\n        b = list(b)\n    if isinstance(a, list) and isinstance(b, list):\n        return len(a) == len(b) and all(close(x, y) for x, y in zip(a, b))\n    if isinstance(a, bool) or isinstance(b, bool):\n        return a == b\n    if isinstance(a, (int, float)) and isinstance(b, (int, float)):\n        return abs(a - b) < 1e-4\n    return a == b\n\n\nLL_ARGS = {\"head\", \"list1\", \"list2\", \"l1\", \"l2\"}\nTREE_IDS = {\"lc104\", \"lc226\", \"lc100\", \"lc543\", \"lc102\", \"lc199\", \"lc98\", \"lc230\", \"lc124\"}\nLIST_RETURN_IDS = {\"lc19\", \"lc206\", \"lc21\", \"lc23\", \"lc2\"}\n\n\nclass UserError(Exception):\n    pass\n\n\ndef user_line(exc):\n    tb = traceback.extract_tb(exc.__traceback__)\n    lines = [f.lineno for f in tb if f.filename == \"solution.py\"]\n    head = type(exc).__name__ + \": \" + str(exc)\n    return (\"Line %d · %s\" % (lines[-1], head)) if lines else head\n\n\ndef get_fn(ns, name):\n    if name in ns and callable(ns[name]):\n        return ns[name]\n    sol = ns.get(\"Solution\")\n    if isinstance(sol, type) and hasattr(sol, name):\n        return getattr(sol(), name)\n    raise UserError(\"Couldn't find a function named %s. Keep the name from the starter code.\" % name)\n\n\ndef run_example(pid, ns, fn_name, ex):\n    i, o = ex[0], ex[1]\n    flag = ex[3] if len(ex) > 3 else \"\"\n    if re.match(r\"^[A-Z]\\w*\\(\", i):\n        parts = [x.strip() for x in i.split(\";\")]\n        obj = eval(lit(parts[0]), ns)\n        res = []\n        for call in parts[1:]:\n            r = eval(\"__o.\" + lit(call), dict(ns, __o=obj))\n            if r is not None:\n                res.append(r)\n        got, exp = res, eval(lit(o))\n    else:\n        args = eval(\"dict(\" + lit(i) + \")\")\n        vals = []\n        for k, v in args.items():\n            if k in LL_ARGS:\n                v = to_ll(v)\n            elif k == \"lists\":\n                v = [to_ll(x) for x in v]\n            elif k == \"root\" and pid in TREE_IDS:\n                v = to_tree(v)\n            elif k in (\"p\", \"q\") and pid == \"lc100\":\n                v = to_tree(v)\n            vals.append(v)\n        fn = get_fn(ns, fn_name)\n        got = fn(*vals)\n        if got is None and pid not in LIST_RETURN_IDS:\n            got = vals[0]\n        if isinstance(got, ListNode) or got is None:\n            got = from_ll(got)\n        elif isinstance(got, TreeNode):\n            got = from_tree(got)\n        exp = eval(lit(o.split(\" (\")[0]))\n    if hasattr(got, \"tolist\"):\n        got = got.tolist()\n    if flag == \"any\":\n        ok = norm(got) == norm(exp)\n    else:\n        ok = close(got, exp)\n    return ok, show(got)\n\n\n# ---------- custom checks for problems whose examples can't be compared directly ----------\n\ndef C(label, got, ok, expected):\n    return {\"label\": label, \"ok\": bool(ok), \"got\": show(got) if not isinstance(got, str) else got, \"expected\": expected}\n\n\ndef chk_lc36(ns, fn):\n    b = [[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"],[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"],\n         [\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"],[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],\n         [\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\n    f = get_fn(ns, \"isValidSudoku\")\n    g1 = f([r[:] for r in b])\n    b2 = [r[:] for r in b]\n    b2[4][0] = \"5\"\n    g2 = f(b2)\n    return [C(\"Valid partial board\", g1, g1 is True, \"true\"), C(\"Two 5s in column 0\", g2, g2 is False, \"false\")]\n\n\ndef chk_lc278(ns, fn):\n    out = []\n    for n, bad in ((6, 4), (1, 1), (50, 37)):\n        ns[\"isBadVersion\"] = lambda v, bad=bad: v >= bad\n        g = get_fn(ns, \"firstBadVersion\")(n)\n        out.append(C(\"n = %d, first bad = %d\" % (n, bad), g, g == bad, str(bad)))\n    return out\n\n\ndef chk_lc141(ns, fn):\n    f = get_fn(ns, \"hasCycle\")\n    h = to_ll([3, 2, 0, -4])\n    h.next.next.next.next = h.next\n    g1 = f(h)\n    g2 = f(to_ll([1]))\n    g3 = f(None)\n    return [C(\"[3, 2, 0, -4], tail → index 1\", g1, g1 is True, \"true\"), C(\"[1], no cycle\", g2, g2 is False, \"false\"),\n            C(\"empty list\", g3, g3 is False, \"false\")]\n\n\ndef chk_lc138(ns, fn):\n    f = get_fn(ns, \"copyRandomList\")\n    NodeC = ns.get(\"Node\", Node)\n    spec = [[7, None], [13, 0], [11, 4], [10, 2], [1, 0]]\n    nodes = [NodeC(v) for v, _ in spec]\n    for i, (v, r) in enumerate(spec):\n        nodes[i].next = nodes[i + 1] if i + 1 < len(nodes) else None\n        nodes[i].random = nodes[r] if r is not None else None\n    c = f(nodes[0])\n    seen, cur, out, fresh = [], c, [], True\n    while cur is not None and len(seen) < 50:\n        seen.append(cur)\n        cur = cur.next\n    for n in seen:\n        if any(n is o for o in nodes):\n            fresh = False\n        out.append([n.val, next((j for j, m in enumerate(seen) if m is n.random), None)])\n    g2 = f(None)\n    return [C(\"[[7,null],[13,0],[11,4],[10,2],[1,0]]\", out, out == spec and fresh, show(spec) + \" (all new nodes)\"),\n            C(\"empty list\", g2, g2 is None, \"null\")]\n\n\ndef chk_lc236(ns, fn):\n    f = get_fn(ns, \"lowestCommonAncestor\")\n    root = to_tree([6, 2, 8, 0, 4, 7, 9])\n    nd = tree_nodes(root)\n    out = []\n    for p, q, e in ((0, 4, 2), (2, 4, 2), (0, 9, 6)):\n        r = f(root, nd[p], nd[q])\n        g = getattr(r, \"val\", r)\n        out.append(C(\"p = %d, q = %d\" % (p, q), g, g == e, str(e)))\n    return out\n\n\ndef chk_lc863(ns, fn):\n    f = get_fn(ns, \"distanceK\")\n    out = []\n    for t, k, e in ((2, 1, [1, 4, 5]), (4, 2, [1, 5]), (3, 0, [3])):\n        root = to_tree([1, 2, 3, 4, 5])\n        g = f(root, tree_nodes(root)[t], k)\n        out.append(C(\"target = %d, k = %d\" % (t, k), g, sorted(g) == e, show(e) + \" (any order)\"))\n    return out\n\n\ndef chk_lc297(ns, fn):\n    Codec = ns.get(\"Codec\")\n    if not isinstance(Codec, type):\n        raise UserError(\"Define a class named Codec with serialize and deserialize.\")\n    out = []\n    for a in ([1, 2, 3, None, None, 4, 5], [], [-1, 0, None, 7]):\n        c = Codec()\n        s = c.serialize(to_tree(a))\n        g = from_tree(Codec().deserialize(s))\n        out.append(C(\"round trip \" + show(a), g, g == a, show(a)))\n    return out\n\n\ndef chk_lc133(ns, fn):\n    f = get_fn(ns, \"cloneGraph\")\n    NodeC = ns.get(\"Node\", Node)\n    adj = [[2, 4], [1, 3], [2, 4], [1, 3]]\n    nodes = [NodeC(i + 1) for i in range(len(adj))]\n    for i, nb in enumerate(adj):\n        nodes[i].neighbors = [nodes[j - 1] for j in nb]\n    c = f(nodes[0])\n    seen, q, fresh = {}, deque([c] if c else []), True\n    while q:\n        n = q.popleft()\n        if n.val in seen:\n            continue\n        seen[n.val] = n\n        if any(n is o for o in nodes):\n            fresh = False\n        for m in n.neighbors:\n            q.append(m)\n    got = [[m.val for m in seen[k].neighbors] for k in sorted(seen)]\n    return [C(\"adjList = [[2,4],[1,3],[2,4],[1,3]]\", got, got == adj and fresh, show(adj) + \" (all new nodes)\"),\n            C(\"empty graph\", f(None), f(None) is None, \"null\")]\n\n\ndef chk_lc528(ns, fn):\n    S = ns.get(\"Solution\")\n    s = S([1, 3])\n    picks = [s.pickIndex() for _ in range(4000)]\n    share = picks.count(1) / len(picks)\n    ok = set(picks) <= {0, 1} and 0.70 <= share <= 0.80\n    return [C(\"w = [1, 3], 4000 picks\", \"index 1 picked %.1f%% of the time\" % (100 * share), ok, \"about 75%\")]\n\n\ndef chk_lc384(ns, fn):\n    S = ns.get(\"Solution\")\n    s = S([1, 2, 3])\n    seen, perm_ok = {}, True\n    for _ in range(1200):\n        r = list(s.shuffle())\n        perm_ok &= sorted(r) == [1, 2, 3]\n        seen[tuple(r)] = seen.get(tuple(r), 0) + 1\n    fair = len(seen) == 6 and min(seen.values()) > 120\n    rs = list(s.reset())\n    return [C(\"1200 shuffles of [1, 2, 3]\", \"%d distinct orders, rarest seen %d times\" % (len(seen), min(seen.values())),\n              perm_ok and fair, \"all 6 orders, each about 200 times\"),\n            C(\"reset()\", rs, rs == [1, 2, 3], \"[1, 2, 3]\")]\n\n\ndef chk_lc382(ns, fn):\n    S = ns.get(\"Solution\")\n    s = S(to_ll([1, 2, 3]))\n    picks = [s.getRandom() for _ in range(900)]\n    counts = [picks.count(v) for v in (1, 2, 3)]\n    ok = set(picks) <= {1, 2, 3} and min(counts) > 220\n    return [C(\"900 calls on [1, 2, 3]\", \"counts %s\" % counts, ok, \"each value about 300 times\")]\n\n\ndef chk_lc398(ns, fn):\n    S = ns.get(\"Solution\")\n    s = S([1, 2, 3, 3, 3])\n    picks = [s.pick(3) for _ in range(900)]\n    counts = [picks.count(v) for v in (2, 3, 4)]\n    ok = set(picks) <= {2, 3, 4} and min(counts) > 220\n    return [C(\"pick(3) 900 times\", \"counts for 2, 3, 4: %s\" % counts, ok, \"each index about 300 times\")]\n\n\ndef chk_lc470(ns, fn):\n    ns[\"rand7\"] = lambda: random.randint(1, 7)\n    f = get_fn(ns, \"rand10\")\n    picks = [f() for _ in range(5000)]\n    counts = [picks.count(v) for v in range(1, 11)]\n    ok = set(picks) <= set(range(1, 11)) and min(counts) > 400 and max(counts) < 600\n    return [C(\"5000 calls\", \"counts %s\" % counts, ok, \"each value about 500 times\")]\n\n\ndef np_():\n    import numpy as np\n    return np\n\n\ndef blobs():\n    np = np_()\n    rng = np.random.default_rng(0)\n    X = np.r_[rng.normal(0, 1, (50, 2)), rng.normal(8, 1, (50, 2))]\n    y = np.r_[np.zeros(50, int), np.ones(50, int)]\n    return X, y\n\n\ndef chk_knn(ns, fn):\n    np = np_()\n    f = get_fn(ns, \"knn_predict\")\n    g = f(np.array([[0, 0], [1, 0], [9, 9], [8, 9]]), np.array([0, 0, 1, 1]), np.array([[1, 1], [9, 8]]), 3)\n    g = list(np.asarray(g).tolist())\n    X, y = blobs()\n    g2 = np.asarray(f(X, y, np.array([[0.5, 0.2], [7.5, 8.3], [-1, 1]]), 5)).tolist()\n    return [C(\"example, k = 3\", g, g == [0, 1], \"[0, 1]\"), C(\"two blobs, k = 5\", g2, g2 == [0, 1, 0], \"[0, 1, 0]\")]\n\n\ndef chk_kmeans(ns, fn):\n    np = np_()\n    X, _ = blobs()\n    res = get_fn(ns, \"kmeans\")(X, 2)\n    cents = np.asarray(res[0] if isinstance(res, tuple) else res, dtype=float)\n    srt = sorted(np.round(cents, 1).tolist())\n    ok = cents.shape == (2, 2) and np.allclose(sorted(cents.tolist()), [[0, 0], [8, 8]], atol=0.6)\n    return [C(\"50 points near (0,0) + 50 near (8,8), k = 2\", srt, ok, \"centroids ≈ [[0, 0], [8, 8]]\")]\n\n\ndef chk_linreg(ns, fn):\n    np = np_()\n    X, y = np.array([[1.0], [2.0], [3.0]]), np.array([2.0, 4.0, 6.0])\n    out = []\n    if \"linear_regression_gd\" in ns:\n        w, b = ns[\"linear_regression_gd\"](X, y)\n        w = float(np.ravel(w)[0])\n        out.append(C(\"gradient descent on y = 2x\", [round(w, 3), round(float(b), 3)], abs(w - 2) < 0.15 and abs(b) < 0.3, \"w ≈ 2, b ≈ 0\"))\n    if \"linear_regression_closed\" in ns:\n        r = np.ravel(ns[\"linear_regression_closed\"](X, y)).tolist()\n        out.append(C(\"closed form on y = 2x\", [round(v, 4) for v in r], np.allclose(r, [0, 2], atol=1e-6), \"[b, w] = [0, 2]\"))\n    if not out:\n        raise UserError(\"Define linear_regression_gd and/or linear_regression_closed.\")\n    return out\n\n\ndef chk_logreg(ns, fn):\n    np = np_()\n    X, y = np.array([[-2.0], [-1.0], [1.0], [2.0]]), np.array([0, 0, 1, 1])\n    w, b = get_fn(ns, \"logistic_regression\")(X, y)\n    p = np.asarray(get_fn(ns, \"predict\")(X, w, b)).tolist()\n    big = np.asarray(get_fn(ns, \"sigmoid\")(np.array([-1000.0, 0.0, 1000.0]))).tolist() if \"sigmoid\" in ns else None\n    out = [C(\"predict on the training points\", p, p == [0, 0, 1, 1], \"[0, 0, 1, 1]\")]\n    if big is not None:\n        out.append(C(\"sigmoid([-1000, 0, 1000]) stays finite\", [round(v, 4) for v in big],\n                     np.allclose(big, [0, 0.5, 1], atol=1e-6), \"[0, 0.5, 1]\"))\n    return out\n\n\ndef chk_softmax(ns, fn):\n    np = np_()\n    s = np.asarray(get_fn(ns, \"softmax\")(np.array([1000.0, 1001.0]))).tolist()\n    ce = float(get_fn(ns, \"cross_entropy\")(np.array([[2.0, 0.0]]), np.array([0])))\n    return [C(\"softmax([1000, 1001])\", [round(v, 4) for v in s], np.allclose(s, [0.2689, 0.7311], atol=1e-4), \"[0.2689, 0.7311]\"),\n            C(\"cross_entropy([[2, 0]], [0])\", round(ce, 4), abs(ce - math.log(1 + math.e ** -2)) < 1e-4, \"≈ 0.1269\")]\n\n\ndef chk_attention(ns, fn):\n    np = np_()\n    rng = np.random.default_rng(1)\n    B, T, D = 2, 4, 8\n    W = [rng.normal(size=(D, D)) for _ in range(4)]\n    X = rng.normal(size=(B, T, D))\n    f = get_fn(ns, \"multi_head_attention\")\n    out = f(X, *W, n_heads=2)\n    X2 = X.copy()\n    X2[:, 3] += 5.0\n    out2 = f(X2, *W, n_heads=2)\n    causal = np.allclose(out[:, :3], out2[:, :3])\n    return [C(\"output shape for X (2, 4, 8), 2 heads\", list(np.shape(out)), np.shape(out) == (B, T, D), \"[2, 4, 8]\"),\n            C(\"changing token 3 leaves tokens 0–2 unchanged\", \"unchanged\" if causal else \"changed\", causal, \"unchanged\")]\n\n\ndef chk_metrics(ns, fn):\n    np = np_()\n    yt, yp = np.array([0, 0, 1, 1]), np.array([0, 1, 1, 1])\n    p, r, f1 = get_fn(ns, \"precision_recall_f1\")(yt, yp)\n    auc = float(get_fn(ns, \"roc_auc\")(yt, np.array([0.1, 0.4, 0.35, 0.8])))\n    return [C(\"precision, recall, F1\", [round(float(p), 3), round(float(r), 3), round(float(f1), 3)],\n              np.allclose([p, r, f1], [2 / 3, 1, 0.8], atol=1e-3), \"[0.667, 1.0, 0.8]\"),\n            C(\"ROC-AUC\", round(auc, 4), abs(auc - 0.75) < 1e-6, \"0.75\")]\n\n\ndef chk_split(ns, fn):\n    np = np_()\n    folds = list(get_fn(ns, \"k_fold\")(10, 5))\n    vals = sorted(int(i) for _, v in folds for i in v)\n    sizes = [(len(t), len(v)) for t, v in folds]\n    ok = len(folds) == 5 and vals == list(range(10)) and all(s == (8, 2) for s in sizes)\n    X, y = np.arange(20).reshape(10, 2), np.arange(10)\n    parts = get_fn(ns, \"train_test_split\")(X, y, 0.2)\n    shp = [list(np.shape(a)) for a in parts]\n    return [C(\"k_fold(10, 5)\", sizes, ok, \"5 folds of (8 train, 2 val), every index validated once\"),\n            C(\"train_test_split, test_size 0.2\", shp, shp == [[8, 2], [2, 2], [8], [2]], \"[[8, 2], [2, 2], [8], [2]]\")]\n\n\ndef chk_retrieval(ns, fn):\n    np = np_()\n    r = get_fn(ns, \"top_k_cosine\")(np.array([1.0, 0.0]), np.array([[0.9, 0.1], [0.0, 1.0], [1.0, 1.0]]), 2)\n    idx = r[0] if isinstance(r, tuple) else r\n    idx = [int(i) for i in np.ravel(idx)]\n    return [C(\"query [1, 0], k = 2\", idx, idx == [0, 2], \"[0, 2]\")]\n\n\ndef chk_sampling(ns, fn):\n    np = np_()\n    f = get_fn(ns, \"sample_next_token\")\n    lg = np.array([2.0, 1.0, 0.1])\n    g0 = int(f(lg, temperature=0))\n    gk = sorted({int(f(lg, top_k=1)) for _ in range(40)})\n    gp = sorted({int(f(np.array([5.0, 0.0, -5.0]), top_p=0.5)) for _ in range(40)})\n    return [C(\"temperature = 0\", g0, g0 == 0, \"0\"), C(\"top_k = 1, 40 draws\", gk, gk == [0], \"[0]\"),\n            C(\"top_p = 0.5 on peaked logits, 40 draws\", gp, gp == [0], \"[0]\")]\n\n\ndef chk_tree(ns, fn):\n    np = np_()\n    X, y = blobs()\n    t = get_fn(ns, \"build_tree\")(X, y)\n    pr = get_fn(ns, \"predict_one\")\n    g = [int(pr(t, np.array([8.0, 8.0]))), int(pr(t, np.array([0.0, 0.0])))]\n    return [C(\"predict (8, 8) and (0, 0)\", g, g == [1, 0], \"[1, 0]\")]\n\n\ndef chk_nb(ns, fn):\n    np = np_()\n    X, y = blobs()\n    m = ns[\"GaussianNB\"]().fit(X, y)\n    g = np.asarray(m.predict(np.array([[0.0, 0.0], [8.0, 8.0]]))).tolist()\n    return [C(\"predict [[0, 0], [8, 8]]\", g, g == [0, 1], \"[0, 1]\")]\n\n\ndef chk_bpe(ns, fn):\n    merges = get_fn(ns, \"train_bpe\")([\"low\", \"lower\", \"lowest\"] * 5, 5)\n    enc = tuple(get_fn(ns, \"encode\")(\"lowest\", merges))\n    first = tuple(merges[0]) if merges else None\n    return [C(\"5 merges learned, first is ('l', 'o')\", [len(merges), first], len(merges) == 5 and first == (\"l\", \"o\"),\n              \"[5, ('l', 'o')]\"),\n            C('encode(\"lowest\") joins back to the word', list(enc), \"\".join(enc) == \"lowest</w>\" and len(enc) < 7,\n              \"fewer than 7 symbols that spell lowest</w>\")]\n\n\ndef chk_norms(ns, fn):\n    np = np_()\n    ln = np.asarray(get_fn(ns, \"layer_norm\")(np.array([[1.0, 2.0, 3.0]]), 1.0, 0.0)).ravel().tolist()\n    rms = np.asarray(get_fn(ns, \"rms_norm\")(np.array([[3.0, 4.0]]), 1.0)).ravel().tolist()\n    bn = get_fn(ns, \"batch_norm_train\")(np.array([[1.0, 10.0], [3.0, 30.0]]), 1.0, 0.0)\n    bn = np.asarray(bn[0] if isinstance(bn, tuple) else bn)\n    return [C(\"layer_norm([[1, 2, 3]])\", [round(v, 4) for v in ln], np.allclose(ln, [-1.2247, 0, 1.2247], atol=1e-3), \"[-1.2247, 0, 1.2247]\"),\n            C(\"rms_norm([[3, 4]])\", [round(v, 4) for v in rms], np.allclose(rms, [0.8485, 1.1314], atol=1e-3), \"[0.8485, 1.1314]\"),\n            C(\"batch_norm_train column means\", np.round(bn.mean(0), 4).tolist(), np.allclose(bn.mean(0), 0, atol=1e-6), \"[0, 0]\")]\n\n\ndef chk_conv(ns, fn):\n    np = np_()\n    f = get_fn(ns, \"conv2d\")\n    a = np.asarray(f(np.ones((4, 4)), np.ones((2, 2))))\n    b = np.asarray(f(np.ones((4, 4)), np.ones((2, 2)), stride=2))\n    c = np.asarray(f(np.ones((3, 3)), np.ones((3, 3)), padding=1))\n    return [C(\"4×4 ones * 2×2 ones\", a.tolist(), a.shape == (3, 3) and np.allclose(a, 4), \"3×3 of 4s\"),\n            C(\"stride = 2\", list(b.shape), b.shape == (2, 2), \"[2, 2]\"),\n            C(\"3×3, padding = 1\", c.tolist(), c.shape == (3, 3) and c[1, 1] == 9 and c[0, 0] == 4, \"centre 9, corners 4\")]\n\n\ndef chk_pca(ns, fn):\n    np = np_()\n    rng = np.random.default_rng(2)\n    t = rng.normal(size=200)\n    X = np.c_[t, 2 * t + rng.normal(scale=0.1, size=200)]\n    Z, comps, ev = get_fn(ns, \"pca\")(X, 1)\n    ev0 = float(np.ravel(ev)[0])\n    return [C(\"projected shape\", list(np.shape(Z)), np.shape(Z) == (200, 1), \"[200, 1]\"),\n            C(\"variance explained by component 1\", round(ev0, 4), ev0 > 0.95, \"> 0.95\")]\n\n\ndef chk_tfidf(ns, fn):\n    v = get_fn(ns, \"tfidf\")([\"the cat sat\", \"the dog sat\"])\n    a = v[0]\n    return [C('doc 1: weight of \"cat\" vs \"the\"', [round(a.get(\"cat\", 0), 4), round(a.get(\"the\", 0), 4)],\n              a.get(\"cat\", 0) > a.get(\"the\", 0) > 0, '\"cat\" higher than \"the\", both > 0')]\n\n\ndef chk_beam(ns, fn):\n    np = np_()\n    lp = np.log(np.array([0.1, 0.6, 0.3]))\n    g = list(get_fn(ns, \"beam_search\")(lambda s: lp, 0, 2, 3))\n    return [C(\"constant step_fn, beam 2, length 3\", [int(x) for x in g], [int(x) for x in g] == [0, 1, 1, 1], \"[0, 1, 1, 1]\")]\n\n\nCHECKS = {\n    \"lc36\": chk_lc36, \"lc278\": chk_lc278, \"lc141\": chk_lc141, \"lc138\": chk_lc138, \"lc236\": chk_lc236,\n    \"lc863\": chk_lc863, \"lc297\": chk_lc297, \"lc133\": chk_lc133, \"lc528\": chk_lc528, \"lc384\": chk_lc384,\n    \"lc382\": chk_lc382, \"lc398\": chk_lc398, \"lc470\": chk_lc470,\n    \"ml-knn\": chk_knn, \"ml-kmeans\": chk_kmeans, \"ml-linreg\": chk_linreg, \"ml-logreg\": chk_logreg,\n    \"ml-softmax\": chk_softmax, \"ml-attention\": chk_attention, \"ml-metrics\": chk_metrics, \"ml-split\": chk_split,\n    \"ml-retrieval\": chk_retrieval, \"ml-sampling\": chk_sampling, \"ml-tree\": chk_tree, \"ml-nb\": chk_nb,\n    \"ml-bpe\": chk_bpe, \"ml-norms\": chk_norms, \"ml-conv\": chk_conv, \"ml-pca\": chk_pca, \"ml-tfidf\": chk_tfidf,\n    \"ml-beam\": chk_beam,\n}\n\n\ndef run_all(pid, code, fn_name, examples_json):\n    examples = json.loads(examples_json)\n    buf = io.StringIO()\n    res = {\"compile_error\": None, \"cases\": [], \"stdout\": \"\"}\n    ns = {\"ListNode\": ListNode, \"TreeNode\": TreeNode, \"Node\": Node, \"__name__\": \"__main__\"}\n    exec(\"from typing import *\\nimport collections, heapq, bisect, itertools, math, random\\n\"\n         \"from collections import *\\nfrom heapq import *\\nfrom bisect import *\", ns)\n    try:\n        with contextlib.redirect_stdout(buf):\n            exec(compile(code, \"solution.py\", \"exec\"), ns)\n    except SyntaxError as e:\n        res[\"compile_error\"] = \"Line %s · SyntaxError: %s\" % (e.lineno, e.msg)\n        res[\"stdout\"] = buf.getvalue()\n        return json.dumps(res)\n    except Exception as e:\n        res[\"compile_error\"] = user_line(e)\n        res[\"stdout\"] = buf.getvalue()\n        return json.dumps(res)\n    res[\"stdout\"] = buf.getvalue()\n\n    def capture(f):\n        b = io.StringIO()\n        try:\n            with contextlib.redirect_stdout(b):\n                return f(), b.getvalue(), None\n        except UserError as e:\n            return None, b.getvalue(), str(e)\n        except RecursionError as e:\n            return None, b.getvalue(), user_line(e) + \" (infinite recursion?)\"\n        except Exception as e:\n            return None, b.getvalue(), user_line(e)\n\n    if pid in CHECKS:\n        out, so, err = capture(lambda: CHECKS[pid](ns, fn_name))\n        if err:\n            res[\"cases\"].append({\"label\": \"Custom test\", \"ok\": False, \"error\": err, \"stdout\": so})\n        else:\n            for k, c in enumerate(out):\n                if k == 0:\n                    c[\"stdout\"] = so\n                res[\"cases\"].append(c)\n        return json.dumps(res)\n\n    for k, ex in enumerate(examples):\n        if len(ex) > 3 and ex[3] == \"nt\":\n            continue\n        r, so, err = capture(lambda: run_example(pid, ns, fn_name, ex))\n        case = {\"label\": \"Example %d\" % (k + 1), \"input\": ex[0], \"expected\": ex[1], \"stdout\": so}\n        if err:\n            case.update(ok=False, error=err)\n        else:\n            case.update(ok=r[0], got=r[1])\n        res[\"cases\"].append(case)\n    return json.dumps(res)\n";
 (function () {
   var T = window.TOPICS;
   var PRIO = { M: "Must Do", G: "Good to Do", S: "Skip-able" };
   var DIFF = { E: "Easy", M: "Medium", H: "Hard" };
+  var STATUS = { own: "Solved on my own", help: "Solved with help" };
+  var PYODIDE = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";
 
   // Flatten problems with stable ids and topic refs
   var ALL = [];
@@ -3894,12 +3963,25 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
   var BY_ID = {};
   ALL.forEach(function (p) { BY_ID[p.id] = p; });
 
-  // Saved progress (per-viewer convenience)
-  var done = {};
-  try { done = JSON.parse(localStorage.getItem("dsa-done") || "{}") || {}; } catch (e) { done = {}; }
-  function save() { try { localStorage.setItem("dsa-done", JSON.stringify(done)); } catch (e) {} }
+  // ---------- Saved progress (this browser only) ----------
+  function load(key) { try { return JSON.parse(localStorage.getItem(key) || "{}") || {}; } catch (e) { return {}; } }
+  function store(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+  var status = load("dsa-status");      // id -> "own" | "help"
+  var redo = load("dsa-redo");          // id -> 1
+  var peeked = load("dsa-peeked");      // id -> 1 once the solution was revealed
+  (function migrate() {                 // old single "solved" tick becomes "on my own"
+    var old = load("dsa-done"), moved = false;
+    Object.keys(old).forEach(function (id) { if (!status[id]) { status[id] = "own"; moved = true; } });
+    if (moved) store("dsa-status", status);
+    try { localStorage.removeItem("dsa-done"); } catch (e) {}
+  })();
+  function setStatus(id, v) { if (v) status[id] = v; else delete status[id]; store("dsa-status", status); }
+  function toggleRedo(id) { if (redo[id]) delete redo[id]; else redo[id] = 1; store("dsa-redo", redo); }
+  function getCode(id) { try { return localStorage.getItem("dsa-code:" + id); } catch (e) { return null; } }
+  function putCode(id, v) { try { localStorage.setItem("dsa-code:" + id, v); } catch (e) {} }
+  function dropCode(id) { try { localStorage.removeItem("dsa-code:" + id); } catch (e) {} }
 
-  var state = { prio: "all", diff: "all", q: "", hide: false };
+  var state = { prio: "all", diff: "all", st: "all", q: "" };
 
   function esc(s) {
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -3908,7 +3990,18 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
     return t.toLowerCase().replace(/[()'’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   }
 
-  // Small Python highlighter
+  // ---------- Icons ----------
+  var ICON = {
+    none: '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
+    own: '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="var(--easy)"/><path d="M6 10.3l2.6 2.6L14.2 7.4" fill="none" stroke="var(--on-badge)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    help: '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="var(--med)"/><path d="M4.6 10c1.4-2.4 3.2-3.6 5.4-3.6s4 1.2 5.4 3.6c-1.4 2.4-3.2 3.6-5.4 3.6S6 12.4 4.6 10z" fill="none" stroke="var(--on-badge)" stroke-width="1.5"/><circle cx="10" cy="10" r="1.7" fill="var(--on-badge)"/></svg>',
+    star: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.6l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.9l5-.7z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>',
+    play: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 4.5v11l9-5.5z" fill="currentColor"/></svg>'
+  };
+  function stIcon(id) { return ICON[status[id] || "none"]; }
+  function stLabel(id) { return STATUS[status[id]] || "Not solved"; }
+
+  // ---------- Small Python highlighter ----------
   var KW = /^(def|class|return|if|elif|else|for|while|in|not|and|or|is|None|True|False|import|from|as|with|lambda|yield|break|continue|pass|nonlocal|global|try|except|finally|raise|del|assert)$/;
   var BI = /^(len|range|enumerate|zip|min|max|sum|sorted|set|dict|list|tuple|int|float|str|abs|any|all|map|iter|next|print|ord|chr|bool|super|isinstance|divmod|self)$/;
   function highlight(code) {
@@ -3950,7 +4043,9 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
   function matches(p) {
     if (state.prio !== "all" && p.p !== state.prio) return false;
     if (state.diff !== "all" && p.d !== state.diff) return false;
-    if (state.hide && done[p.id]) return false;
+    if (state.st === "none" && status[p.id]) return false;
+    if ((state.st === "own" || state.st === "help") && status[p.id] !== state.st) return false;
+    if (state.st === "redo" && !redo[p.id]) return false;
     if (state.q) {
       var q = state.q.toLowerCase();
       var hay = (p.t + " " + (p.n || "") + " " + (p.tag || "")).toLowerCase();
@@ -3966,18 +4061,21 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
     }).join("");
   }
 
+  function rowHTML(p) {
+    var t = p.topic, label = t.ml ? p.n : "#" + p.n, st = status[p.id];
+    return '<li class="prow' + (st ? " st-" + st : "") + '" data-open="' + p.id + '" tabindex="0" role="link" aria-label="Open ' + esc(p.t) + '">' +
+      '<button class="stbtn" data-cycle="' + p.id + '" title="' + stLabel(p.id) + ' · click to change" aria-label="Status for ' + esc(p.t) + ': ' + stLabel(p.id) + '. Click to change.">' + stIcon(p.id) + "</button>" +
+      '<button class="starbtn' + (redo[p.id] ? " on" : "") + '" data-star="' + p.id + '" aria-pressed="' + (redo[p.id] ? "true" : "false") + '" title="' + (redo[p.id] ? "Marked to redo" : "Mark to redo") + '" aria-label="Redo ' + esc(p.t) + '">' + ICON.star + "</button>" +
+      '<span class="pn tnum">' + esc(label) + "</span>" +
+      '<span class="pt"><span>' + esc(p.t) + "</span>" + (p.tag ? "<small>" + esc(p.tag) + "</small>" : "") + "</span>" +
+      chips(p) + "</li>";
+  }
+
   function renderTopics() {
     var html = T.map(function (t, i) {
       var list = t.problems.filter(matches);
       var must = t.problems.filter(function (p) { return p.p === "M"; }).length;
-      var rows = list.map(function (p) {
-        var label = t.ml ? p.n : "#" + p.n;
-        return '<li class="prow' + (done[p.id] ? " done" : "") + '" data-open="' + p.id + '" tabindex="0" role="link" aria-label="Open ' + esc(p.t) + '">' +
-          '<input type="checkbox" data-done="' + p.id + '" ' + (done[p.id] ? "checked" : "") + ' aria-label="Mark ' + esc(p.t) + ' solved">' +
-          '<span class="pn tnum">' + esc(label) + "</span>" +
-          '<span class="pt"><span>' + esc(p.t) + "</span>" + (p.tag ? "<small>" + esc(p.tag) + "</small>" : "") + "</span>" +
-          chips(p) + "</li>";
-      }).join("");
+      var rows = list.map(rowHTML).join("");
       return '<section class="topic" id="t-' + t.id + '">' +
         '<div class="topic-head"><span class="topic-num">' + String(i + 1).padStart(2, "0") + '</span><h2>' + esc(t.name) + '</h2>' +
         '<span class="topic-count tnum">' + t.problems.length + " problems · " + must + " Must Do</span></div>" +
@@ -3993,15 +4091,32 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
   }
 
   function updateStats() {
-    var solved = ALL.filter(function (p) { return done[p.id]; }).length;
+    var own = 0, help = 0, rd = 0, mustDone = 0, mustTotal = 0;
+    ALL.forEach(function (p) {
+      if (status[p.id] === "own") own++;
+      if (status[p.id] === "help") help++;
+      if (redo[p.id]) rd++;
+      if (p.p === "M") { mustTotal++; if (status[p.id]) mustDone++; }
+    });
     var dsa = ALL.filter(function (p) { return !p.topic.ml; });
     document.getElementById("st-total").textContent = dsa.length;
-    document.getElementById("st-must").textContent = ALL.filter(function (p) { return p.p === "M"; }).length;
+    document.getElementById("st-must").textContent = mustTotal;
     document.getElementById("st-ml").textContent = ALL.length - dsa.length;
-    document.getElementById("pbar").style.width = (100 * solved / ALL.length) + "%";
-    var mustSolved = ALL.filter(function (p) { return p.p === "M" && done[p.id]; }).length;
-    var mustTotal = ALL.filter(function (p) { return p.p === "M"; }).length;
-    document.getElementById("ptext").textContent = solved + " of " + ALL.length + " solved · " + mustSolved + "/" + mustTotal + " Must Do";
+    document.getElementById("pbar-own").style.width = (100 * own / ALL.length) + "%";
+    document.getElementById("pbar-help").style.width = (100 * help / ALL.length) + "%";
+    document.getElementById("ptext").innerHTML =
+      '<span class="k-own">' + own + " on your own</span> · " +
+      '<span class="k-help">' + help + " with help</span> · " +
+      '<span class="k-redo">' + rd + " to redo</span> · Must Do " + mustDone + "/" + mustTotal;
+  }
+
+  function refreshRow(id) {
+    var old = document.querySelector('.prow[data-open="' + id + '"]');
+    if (!old) return;
+    var tmp = document.createElement("ul");
+    tmp.innerHTML = rowHTML(BY_ID[id]);
+    old.replaceWith(tmp.firstChild);
+    updateStats();
   }
 
   // ---------- Statement + examples ----------
@@ -4022,14 +4137,71 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
       (x.c ? '<div class="constraints"><span class="ex-k">Constraints</span><span>' + esc(x.c) + "</span></div>" : "");
   }
 
+  // ---------- Starter code ----------
+  function fnName(p) { var m = /^def (\w+)/m.exec(p.code); return m ? m[1] : ""; }
+  function starter(p) {
+    var lines = p.code.split("\n"), out = [], i = 0, imports = [];
+    function sig(k) {
+      var s = lines[k];
+      while (!/:\s*(#.*)?$/.test(s) && k + 1 < lines.length) { k++; s += "\n" + lines[k]; }
+      return { text: s, end: k };
+    }
+    while (i < lines.length) {
+      var ln = lines[i], m;
+      if (/^(import|from)\s/.test(ln)) { imports.push(ln); i++; continue; }
+      if ((m = /^class\s+(\w+)/.exec(ln))) {
+        var keep = m[1] !== "Node", block = [ln], j = i + 1;
+        while (j < lines.length && (lines[j] === "" || /^\s/.test(lines[j]))) {
+          if (/^ {4}def\s/.test(lines[j])) {
+            var s = sig(j);
+            if (/^ {4}def _(?!_)/.test(lines[j])) { j = s.end + 1; continue; }   // private helpers would hint at the approach
+            if (block.length > 1) block.push("");
+            block.push(s.text, "        pass");
+            j = s.end + 1; continue;
+          }
+          j++;
+        }
+        if (keep) out.push(block.join("\n"));
+        i = j; continue;
+      }
+      if (/^def\s/.test(ln)) {
+        var s2 = sig(i);
+        out.push(s2.text + "\n    pass");
+        i = s2.end + 1; continue;
+      }
+      i++;
+    }
+    var notes = [];
+    if (/ListNode/.test(p.code)) notes.push("ListNode(val, next) is predefined.");
+    if (/TreeNode/.test(p.code)) notes.push("TreeNode(val, left, right) is predefined.");
+    if (p.id === "lc138") notes.push("Node(val, next, random) is predefined.");
+    if (p.id === "lc133") notes.push("Node(val, neighbors) is predefined.");
+    if (p.id === "lc278") notes.push("isBadVersion(version) is provided.");
+    if (p.id === "lc470") notes.push("rand7() is provided.");
+    if (/import torch/.test(p.code)) notes.push("PyTorch can't run in the browser: write it here, run it locally.");
+    var head = notes.length ? "# " + notes.join("\n# ") + "\n\n" : "";
+    return head + (imports.length ? imports.join("\n") + "\n\n" : "") + out.join("\n\n\n") + "\n";
+  }
+
   // ---------- Detail ----------
+  function statusControlHTML(p) {
+    var st = status[p.id] || "none";
+    function opt(v, label) {
+      return '<button data-set="' + v + '" aria-pressed="' + (st === v ? "true" : "false") + '">' + ICON[v] + "<span>" + label + "</span></button>";
+    }
+    return '<div class="stctl" role="group" aria-label="Your status">' + opt("none", "Not solved") + opt("own", "On my own") + opt("help", "With help") + "</div>" +
+      '<button class="btn redo' + (redo[p.id] ? " on" : "") + '" data-star="' + p.id + '" aria-pressed="' + (redo[p.id] ? "true" : "false") + '">' + ICON.star + "<span>" + (redo[p.id] ? "Marked to redo" : "Mark to redo") + "</span></button>";
+  }
+
   function renderDetail(p) {
     var idx = ALL.indexOf(p);
     var prev = ALL[idx - 1], next = ALL[idx + 1];
     var t = p.topic;
     var shown = revealedId === p.id;
-    var link = t.ml ? "" : '<a class="btn" href="https://leetcode.com/problems/' + slug(p.t) + '/" target="_blank" rel="noopener">Open on LeetCode ↗</a>';
+    var link = t.ml ? "" : '<a class="btn" href="https://leetcode.com/problems/' + slug(p.t) + '/" target="_blank" rel="noopener">LeetCode ↗</a>';
     var label = t.ml ? p.n : "LeetCode #" + p.n;
+    var code = getCode(p.id);
+    if (code === null) code = starter(p);
     var html =
       '<div class="crumbs">' +
         '<button class="btn" data-back>← All problems</button>' +
@@ -4043,9 +4215,22 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
           (p.tag ? '<span>· ' + esc(p.tag) + "</span>" : "") + "</div>" +
         "<h2>" + esc(p.t) + "</h2>" +
         statementHTML(p) +
-        '<div class="qactions">' +
-          '<button class="btn' + (done[p.id] ? "" : " primary") + '" data-toggle="' + p.id + '">' + (done[p.id] ? "✓ Solved · undo" : "Mark as solved") + "</button>" + link +
-        "</div></article>" +
+        '<div class="qactions" id="qactions">' + statusControlHTML(p) + link + "</div>" +
+      "</article>" +
+      '<section class="workspace" aria-label="Code editor">' +
+        '<div class="ws-head">' +
+          '<h3>Your code</h3><span class="ws-lang">Python 3</span>' +
+          '<div class="ws-actions">' +
+            '<button class="btn" data-reset>Reset</button>' +
+            '<button class="btn primary runbtn" data-run>' + ICON.play + '<span>Run</span><kbd>Ctrl ↵</kbd></button>' +
+          "</div></div>" +
+        '<div class="editor">' +
+          '<pre class="ed-gutter" id="ed-gutter" aria-hidden="true"></pre>' +
+          '<div class="ed-area"><pre class="ed-hl" id="ed-hl" aria-hidden="true"></pre>' +
+          '<textarea id="ed" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off" aria-label="Python code editor"></textarea></div>' +
+        "</div>" +
+        '<div class="console" id="console" aria-live="polite"><p class="con-idle">Write your solution, then press <b>Run</b> to check it against the examples. Code is saved in this browser as you type.</p></div>' +
+      "</section>" +
       '<div class="panes">' +
         '<section class="pane" aria-label="Optimised solution">' +
           '<div class="pane-head"><h3>Optimised solution</h3><div class="pane-actions">' +
@@ -4070,17 +4255,210 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
           (p.w ? "<h4>Watch out</h4><p class=\"watch\">" + esc(p.w) + "</p>" : "") +
           '<p class="hint-note">Pattern: ' + esc(t.name) + ". Try it yourself before reading the code, then re-solve it from memory tomorrow.</p>" +
         "</section></div>";
-    var el = document.getElementById("detail");
-    el.innerHTML = html;
+    document.getElementById("detail").innerHTML = html;
+    setupEditor(p, code);
   }
 
-  // Solution stays blurred until the viewer reveals it; resets on each new problem
+  function refreshStatusControls(p) {
+    var qa = document.getElementById("qactions");
+    if (!qa) return;
+    var link = qa.querySelector("a");
+    qa.innerHTML = statusControlHTML(p);
+    if (link) qa.appendChild(link);
+  }
+
+  // ---------- Editor ----------
+  var ed = null, edP = null, saveTimer = null;
+  function setupEditor(p, code) {
+    ed = document.getElementById("ed"); edP = p;
+    ed.value = code;
+    paint();
+    ed.addEventListener("input", function () {
+      paint();
+      clearTimeout(saveTimer);
+      var id = p.id;
+      saveTimer = setTimeout(function () { putCode(id, ed.value); }, 300);
+    });
+    ed.addEventListener("scroll", function () { document.getElementById("ed-hl").scrollLeft = ed.scrollLeft; });
+    ed.addEventListener("keydown", onEditorKey);
+  }
+  function paint() {
+    if (!ed) return;
+    var v = ed.value;
+    document.getElementById("ed-hl").innerHTML = highlight(v) + "\n ";
+    var n = v.split("\n").length, g = "";
+    for (var i = 1; i <= n; i++) g += i + "\n";
+    document.getElementById("ed-gutter").textContent = g;
+    ed.style.height = "auto";
+    ed.style.height = Math.max(ed.scrollHeight, 260) + "px";
+    document.getElementById("ed-hl").scrollLeft = ed.scrollLeft;
+  }
+  function insert(text) {
+    ed.focus();
+    var ok = false;
+    try { ok = document.execCommand("insertText", false, text); } catch (e) { ok = false; }
+    if (!ok) { ed.setRangeText(text, ed.selectionStart, ed.selectionEnd, "end"); ed.dispatchEvent(new Event("input")); }
+  }
+  function lineStart(pos) { return ed.value.lastIndexOf("\n", pos - 1) + 1; }
+  function onEditorKey(e) {
+    var v = ed.value, s = ed.selectionStart, en = ed.selectionEnd;
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); runCode(); return; }
+    if ((e.ctrlKey || e.metaKey) && e.key === "/") {
+      e.preventDefault();
+      var a = lineStart(s), b = v.indexOf("\n", en); if (b < 0) b = v.length;
+      var block = v.slice(a, b).split("\n");
+      var allC = block.every(function (l) { return !l.trim() || /^\s*#/.test(l); });
+      var nb = block.map(function (l) { return !l.trim() ? l : allC ? l.replace(/^(\s*)# ?/, "$1") : l.replace(/^(\s*)/, "$1# "); }).join("\n");
+      ed.setSelectionRange(a, b); insert(nb); ed.setSelectionRange(a, a + nb.length); return;
+    }
+    if (e.key === "Tab") {
+      e.preventDefault();
+      if (s !== en && v.slice(s, en).indexOf("\n") >= 0 || e.shiftKey) {
+        var a2 = lineStart(s), b2 = v.indexOf("\n", en - (en > s && v[en - 1] === "\n" ? 1 : 0)); if (b2 < 0) b2 = v.length;
+        var lines = v.slice(a2, b2).split("\n");
+        var changed = lines.map(function (l) { return e.shiftKey ? l.replace(/^ {1,4}/, "") : "    " + l; }).join("\n");
+        ed.setSelectionRange(a2, b2); insert(changed); ed.setSelectionRange(a2, a2 + changed.length);
+      } else insert("    ");
+      return;
+    }
+    if (e.key === "Enter" && !e.shiftKey && !e.altKey) {
+      e.preventDefault();
+      var ls = lineStart(s), cur = v.slice(ls, s), ind = /^\s*/.exec(cur)[0];
+      if (/:\s*(#.*)?$/.test(cur)) ind += "    ";
+      if (/^\s*(return|pass|break|continue|raise)\b/.test(cur) && ind.length >= 4) ind = ind.slice(4);
+      insert("\n" + ind); return;
+    }
+    if (e.key === "Backspace" && s === en && s > 0) {
+      var before = v.slice(lineStart(s), s);
+      if (before.length && /^ +$/.test(before)) {
+        e.preventDefault();
+        var del = before.length % 4 || 4;
+        ed.setSelectionRange(s - del, s); insert(""); return;
+      }
+    }
+    var pairs = { "(": ")", "[": "]", "{": "}" };
+    if (pairs[e.key] && s !== en) {
+      e.preventDefault();
+      var sel = v.slice(s, en); insert(e.key + sel + pairs[e.key]); ed.setSelectionRange(s + 1, s + 1 + sel.length);
+    }
+  }
+
+  // ---------- Python runner (Pyodide in a Web Worker) ----------
+  var worker = null, pending = null, pyLoaded = false;
+  function workerSource() {
+    return [
+      'var BASE = ' + JSON.stringify(PYODIDE) + ';',
+      'var HARNESS = ' + JSON.stringify(window.HARNESS_PY || "") + ';',
+      'var ready = null;',
+      'function boot() { importScripts(BASE + "pyodide.js"); return loadPyodide({ indexURL: BASE }).then(function (py) { py.runPython(HARNESS); return py; }); }',
+      'self.onmessage = function (e) {',
+      '  var m = e.data;',
+      '  if (!ready) { self.postMessage({ type: "status", text: "Loading Python (first run only)…" }); ready = boot(); }',
+      '  ready.then(function (py) {',
+      '    var step = Promise.resolve();',
+      '    if (m.numpy) { self.postMessage({ type: "status", text: "Loading NumPy…" }); step = py.loadPackage("numpy"); }',
+      '    return step.then(function () {',
+      '      self.postMessage({ type: "running" });',
+      '      py.globals.set("__a", py.toPy([m.pid, m.code, m.fn, m.examples]));',
+      '      var out = py.runPython("run_all(*__a)");',
+      '      self.postMessage({ type: "result", data: out });',
+      '    });',
+      '  }).catch(function (err) { ready = null; self.postMessage({ type: "fatal", text: String((err && err.message) || err) }); });',
+      '};'
+    ].join("\n");
+  }
+  function getWorker() {
+    if (worker) return worker;
+    var url = URL.createObjectURL(new Blob([workerSource()], { type: "text/javascript" }));
+    worker = new Worker(url);
+    worker.onmessage = function (e) { if (pending) pending(e.data); };
+    worker.onerror = function (e) { if (pending) pending({ type: "fatal", text: e.message || "The runner stopped." }); };
+    return worker;
+  }
+  function killWorker() { if (worker) { worker.terminate(); worker = null; } }
+
+  var running = false;
+  function runCode() {
+    if (!ed || !edP || running) return;
+    var p = edP, code = ed.value, con = document.getElementById("console");
+    putCode(p.id, code);
+    if (/^\s*(import\s+torch|from\s+torch)/m.test(code)) {
+      con.innerHTML = '<div class="con-sum warn">PyTorch isn\'t available in the browser runner. Write your solution here and run it on your machine; it is saved in this browser.</div>';
+      return;
+    }
+    running = true;
+    var btn = document.querySelector("[data-run]");
+    if (btn) btn.disabled = true;
+    con.innerHTML = '<div class="con-sum busy"><span class="spin"></span><span id="con-msg">' + (pyLoaded ? "Running…" : "Starting Python…") + "</span></div>";
+    var ex = ((window.EXTRA || {})[p.id] || {}).ex || [];
+    var limit = null;
+    function finish() { running = false; clearTimeout(limit); pending = null; var b = document.querySelector("[data-run]"); if (b) b.disabled = false; }
+    pending = function (msg) {
+      if (edP !== p) { finish(); return; }
+      var m = document.getElementById("con-msg");
+      if (msg.type === "status") { if (m) m.textContent = msg.text; return; }
+      if (msg.type === "running") {
+        pyLoaded = true;
+        if (m) m.textContent = "Running…";
+        limit = setTimeout(function () {
+          killWorker(); finish();
+          con.innerHTML = '<div class="con-sum bad">Time limit exceeded (10 s). Look for an infinite loop or a very slow approach.</div>';
+        }, 10000);
+        return;
+      }
+      if (msg.type === "fatal") {
+        finish(); killWorker();
+        con.innerHTML = '<div class="con-sum warn">Python couldn\'t load here (' + esc(msg.text.slice(0, 160)) + '). The runner needs internet access to cdn.jsdelivr.net; it works on the GitHub site.</div>';
+        return;
+      }
+      if (msg.type === "result") { finish(); showResult(p, JSON.parse(msg.data)); }
+    };
+    getWorker().postMessage({
+      pid: p.id, code: code, fn: fnName(p), examples: JSON.stringify(ex),
+      numpy: /numpy/.test(code) || (p.topic.ml && !/bpe|tfidf/.test(p.id))
+    });
+  }
+
+  function showResult(p, r) {
+    var con = document.getElementById("console");
+    if (!con) return;
+    var out = "";
+    if (r.compile_error) {
+      out = '<div class="con-sum bad"><b>Error</b> before any test ran</div><pre class="con-err">' + esc(r.compile_error) + "</pre>";
+      if (r.stdout) out += '<div class="con-k">Printed</div><pre class="con-out">' + esc(r.stdout) + "</pre>";
+      con.innerHTML = out; return;
+    }
+    var cases = r.cases, pass = cases.filter(function (c) { return c.ok; }).length, all = pass === cases.length && cases.length > 0;
+    var note = "";
+    if (all && !status[p.id]) {
+      var v = peeked[p.id] ? "help" : "own";
+      setStatus(p.id, v);
+      refreshStatusControls(p);
+      note = '<span class="con-note">Marked as ' + STATUS[v].toLowerCase() + (v === "help" ? " because you opened the solution" : "") + ". Change it above.</span>";
+    }
+    out = '<div class="con-sum ' + (all ? "good" : "bad") + '"><b>' + (all ? "Accepted" : (cases.some(function (c) { return c.error; }) ? "Runtime error" : "Wrong answer")) + "</b>" +
+      '<span class="tnum">' + pass + " / " + cases.length + " tests passed</span>" + note + "</div>";
+    if (r.stdout) out += '<div class="con-k">Printed while loading your code</div><pre class="con-out">' + esc(r.stdout) + "</pre>";
+    out += cases.map(function (c) {
+      var rows = "";
+      if (c.input) rows += '<div class="cr"><span class="con-k">Input</span><code>' + esc(c.input) + "</code></div>";
+      if (c.error) rows += '<div class="cr"><span class="con-k">Error</span><code class="con-errtxt">' + esc(c.error) + "</code></div>";
+      else rows += '<div class="cr"><span class="con-k">Your output</span><code>' + esc(c.got) + "</code></div>";
+      rows += '<div class="cr"><span class="con-k">Expected</span><code>' + esc(c.expected) + "</code></div>";
+      if (c.stdout) rows += '<div class="cr"><span class="con-k">Printed</span><pre class="con-out">' + esc(c.stdout.slice(0, 2000)) + "</pre></div>";
+      return '<details class="case ' + (c.ok ? "ok" : "no") + '"' + (c.ok && all ? "" : " open") + '><summary><span class="mark">' + (c.ok ? "✓" : "✗") + "</span>" + esc(c.label) + "</summary>" + rows + "</details>";
+    }).join("");
+    con.innerHTML = out;
+  }
+
+  // ---------- Solution reveal ----------
   var revealedId = null;
   function setShown(on) {
     var wrap = document.getElementById("solwrap");
     if (!wrap) return;
     var p = BY_ID[location.hash.slice(1)];
     revealedId = on && p ? p.id : null;
+    if (on && p) { peeked[p.id] = 1; store("dsa-peeked", peeked); }
     wrap.classList.toggle("locked", !on);
     var inner = wrap.querySelector(".sol-inner");
     if (on) inner.removeAttribute("inert"); else inner.setAttribute("inert", "");
@@ -4097,11 +4475,15 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
     var home = document.getElementById("home"), det = document.getElementById("detail");
     if (h && BY_ID[h]) {
       if (!home.hidden) lastScroll = window.scrollY;
+      if (ed && edP) putCode(edP.id, ed.value);
       renderDetail(BY_ID[h]);
       home.hidden = true; det.hidden = false;
       window.scrollTo(0, 0);
     } else {
+      if (ed && edP) putCode(edP.id, ed.value);
+      ed = null; edP = null;
       det.hidden = true; home.hidden = false;
+      det.innerHTML = "";
       renderTopics();
       window.scrollTo(0, lastScroll);
       if (h && h.indexOf("t-") === 0) {
@@ -4112,16 +4494,35 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
   function open(id) { location.hash = id; }
 
   // ---------- Events ----------
+  var resetArmed = null;
   document.addEventListener("click", function (e) {
     var t = e.target;
-    var cb = t.closest("[data-done]");
-    if (cb) {
+    var cyc = t.closest("[data-cycle]");
+    if (cyc) {
       e.stopPropagation();
-      var id = cb.getAttribute("data-done");
-      if (cb.checked) done[id] = 1; else delete done[id];
-      save();
-      cb.closest(".prow").classList.toggle("done", !!done[id]);
-      updateStats();
+      var id = cyc.getAttribute("data-cycle"), cur = status[id];
+      setStatus(id, !cur ? "own" : cur === "own" ? "help" : null);
+      refreshRow(id);
+      var nb = document.querySelector('[data-cycle="' + id + '"]'); if (nb) nb.focus();
+      return;
+    }
+    var star = t.closest("[data-star]");
+    if (star) {
+      e.stopPropagation();
+      var sid = star.getAttribute("data-star");
+      toggleRedo(sid);
+      if (document.getElementById("detail").hidden) {
+        refreshRow(sid);
+        var ns = document.querySelector('[data-star="' + sid + '"]'); if (ns) ns.focus();
+      } else { refreshStatusControls(BY_ID[sid]); var ds = document.querySelector('.qactions [data-star]'); if (ds) ds.focus(); }
+      return;
+    }
+    var set = t.closest("[data-set]");
+    if (set && edP) {
+      var v = set.getAttribute("data-set");
+      setStatus(edP.id, v === "none" ? null : v);
+      refreshStatusControls(edP);
+      var f = document.querySelector('[data-set="' + v + '"]'); if (f) f.focus();
       return;
     }
     var row = t.closest("[data-open]");
@@ -4133,11 +4534,20 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
     if (go && go.getAttribute("data-go")) { open(go.getAttribute("data-go")); return; }
     var tp = t.closest("[data-topic]");
     if (tp) { lastScroll = 0; location.hash = "t-" + tp.getAttribute("data-topic"); return; }
-    var tg = t.closest("[data-toggle]");
-    if (tg) {
-      var pid = tg.getAttribute("data-toggle");
-      if (done[pid]) delete done[pid]; else done[pid] = 1;
-      save(); renderDetail(BY_ID[pid]); return;
+    if (t.closest("[data-run]")) { runCode(); return; }
+    var rs = t.closest("[data-reset]");
+    if (rs && edP) {
+      if (!resetArmed) {
+        rs.textContent = "Click again to reset";
+        resetArmed = setTimeout(function () { resetArmed = null; var b = document.querySelector("[data-reset]"); if (b) b.textContent = "Reset"; }, 3000);
+        return;
+      }
+      clearTimeout(resetArmed); resetArmed = null;
+      dropCode(edP.id);
+      ed.value = starter(edP); paint();
+      rs.textContent = "Reset";
+      document.getElementById("console").innerHTML = '<p class="con-idle">Back to the starter code.</p>';
+      return;
     }
     if (t.closest("[data-reveal]")) { setShown(true); return; }
     if (t.closest("[data-hide]")) { setShown(false); return; }
@@ -4155,9 +4565,11 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
     }
   });
   document.addEventListener("keydown", function (e) {
+    var tag = e.target.tagName;
+    var typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "BUTTON";
     var row = e.target.closest && e.target.closest("[data-open]");
-    if (row && (e.key === "Enter" || e.key === " ") && e.target.tagName !== "INPUT") { e.preventDefault(); open(row.getAttribute("data-open")); }
-    if (!document.getElementById("detail").hidden && e.target.tagName !== "INPUT") {
+    if (row && !typing && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); open(row.getAttribute("data-open")); }
+    if (!document.getElementById("detail").hidden && tag !== "INPUT" && tag !== "TEXTAREA") {
       var p = BY_ID[location.hash.slice(1)]; if (!p) return;
       var i = ALL.indexOf(p);
       if (e.key === "ArrowRight" && ALL[i + 1]) open(ALL[i + 1].id);
@@ -4176,9 +4588,10 @@ lc460:{s:'Design a Least Frequently Used cache with a fixed capacity. get(key) r
   }
   bindSeg("f-prio", "prio");
   bindSeg("f-diff", "diff");
+  bindSeg("f-st", "st");
   document.getElementById("q").addEventListener("input", function (e) { state.q = e.target.value.trim(); renderTopics(); });
-  document.getElementById("hide-done").addEventListener("change", function (e) { state.hide = e.target.checked; renderTopics(); });
   window.addEventListener("hashchange", route);
+  window.addEventListener("pagehide", function () { if (ed && edP) putCode(edP.id, ed.value); });
 
   renderNav();
   route();
